@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+<dataModel IOversion="3.1.0" attributeFormDefault="Unqualified" elementFormDefault="Qualified" encoding="UTF-8" encrypted="false" hibernateIDGeneratorMethodDefault="native" targetNamespace="http://www.c24.biz" name="Trades.dod" version="0.0.12">
+  <classification name="File">
+    <type>
+      <complexType abstract="false" byteAlignment="No Alignment" contentModel="Sequence" excludeFromDatabase="false" processAsBatch="false" specialisation="Generic complex" specifyStructure="true" name="Trades">
+        <element identifier="false" max="-1" min="1" typeRef="Records/Trade" name="Trade"></element>
+      </complexType>
+    </type>
+    <element identifier="false" max="1" min="1" typeRef="File/Trades" name="Trades"></element>
+  </classification>
+  <classification name="Records">
+    <type>
+      <complexType abstract="false" byteAlignment="No Alignment" contentModel="Sequence" excludeFromDatabase="false" processAsBatch="false" specialisation="Generic complex" specifyStructure="true" name="Trade">
+        <facet facetType="terminator">
+          <value>0a|00</value>
+        </facet>
+        <facet facetType="delimiter">
+          <value>Infix|true|2c!22</value>
+        </facet>
+        <facet facetType="format_type">
+          <value>Delimited</value>
+        </facet>
+        <element identifier="false" max="1" min="1" name="time">
+          <type>
+            <atomicSimpleType baseType="#date_datetime" name="time"></atomicSimpleType>
+          </type>
+        </element>
+        <element identifier="false" max="1" min="1" name="id">
+          <type>
+            <atomicSimpleType baseType="#string" name="id">
+              <facet facetType="min_length">
+                <value>0</value>
+              </facet>
+            </atomicSimpleType>
+          </type>
+        </element>
+        <element identifier="false" max="1" min="1" name="counterparty">
+          <type>
+            <atomicSimpleType baseType="#string" name="counterparty">
+              <facet facetType="min_length">
+                <value>0</value>
+              </facet>
+            </atomicSimpleType>
+          </type>
+        </element>
+        <element identifier="false" max="1" min="1" name="stock">
+          <type>
+            <atomicSimpleType baseType="#string" name="stock">
+              <facet facetType="min_length">
+                <value>0</value>
+              </facet>
+            </atomicSimpleType>
+          </type>
+        </element>
+        <element identifier="false" max="1" min="1" name="quantity">
+          <type>
+            <atomicSimpleType baseType="#number_long" name="quantity">
+              <facet facetType="number_format">
+                <value>#;'-'#</value>
+              </facet>
+              <validationRuleRef ref="Long Greater Than Zero"></validationRuleRef>
+            </atomicSimpleType>
+          </type>
+        </element>
+        <element identifier="false" max="1" min="1" name="currency">
+          <type>
+            <atomicSimpleType baseType="#string" name="currency">
+              <facet facetType="min_length">
+                <value>0</value>
+              </facet>
+            </atomicSimpleType>
+          </type>
+        </element>
+        <element identifier="false" max="1" min="1" name="price">
+          <type>
+            <atomicSimpleType baseType="#number_double" name="price">
+              <facet facetType="number_format">
+                <value>#0.#;'-'#0.#</value>
+              </facet>
+              <facet facetType="decimal_separator">
+                <value>2e</value>
+              </facet>
+            </atomicSimpleType>
+          </type>
+        </element>
+      </complexType>
+    </type>
+  </classification>
+  <validationRule severity="Error" name="Long Greater Than Zero">
+    <code>
+/*
+ * object: is the Complex/Simple data object containing the actual data;
+ * component: is the Element/Attribute that defines object;
+ * context: is the Complex Data Object parent of object;
+ * manager: is the object responsible for validation.
+ *
+ * Example:
+ * Object element = object.getElement("dummyElement");
+ * if (element == null) {
+ *    manager.fireValidationEvent(new biz.c24.io.api.data.ValidationEvent(
+ *        object, component, context, biz.c24.io.api.ValidationResultEnum.FAILED_RULE_ERROR, "error message"));
+ *    return false;
+ * }
+*/
+
+// insert logic
+
+if((Long)object &lt;= 0) {
+    manager.fireValidationEvent(new biz.c24.io.api.data.ValidationEvent(
+       object, component, context, biz.c24.io.api.ValidationResultEnum.FAILED_RULE_ERROR, "quantity is not greater than zero"));
+    return false;
+} else {
+    return true;
+}
+</code>
+    <inputType modelRef="Trades.dod" typeRef="#any"></inputType>
+    <import>java.util.*</import>
+    <import>java.math.*</import>
+    <import>java.lang.*</import>
+    <import>java.text.*</import>
+  </validationRule>
+  <namespace prefix="" uri="http://www.c24.biz"></namespace>
+</dataModel>

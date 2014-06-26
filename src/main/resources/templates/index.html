@@ -1,0 +1,14 @@
+<html>
+<body>
+<H3>Received Trade Messages</H3>
+
+
+<table th:if="${not #lists.isEmpty(messages)}">
+
+    <tr th:each="message : ${messages}">
+        <td th:text="${message}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

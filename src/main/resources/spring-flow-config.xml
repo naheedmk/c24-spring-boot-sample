@@ -1,0 +1,108 @@
+<!--
+ | Copyright 2012-2014 C24 Technologies.
+ | 
+ | Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
+ | to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ | and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ |
+ | The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ |
+ | THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ | FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL C24 TECHNOLOGIES BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ | WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+ | SOFTWARE.
+ | 
+ | C24/Spring/H2 integration demo - Core Flow
+-->
+<beans:beans xmlns="http://www.springframework.org/schema/integration" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:c24="http://schema.c24.biz/spring-core"
+  xmlns:int-c24="http://schema.c24.biz/spring-integration"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+    http://schema.c24.biz/spring-core http://schema.c24.biz/spring-core.xsd
+    http://schema.c24.biz/spring-integration http://schema.c24.biz/spring-integration.xsd
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+    <!-- ========================================================================= -->
+    <!-- Our core flow - parse, validate, filter, transform (if required), persist -->
+    <!-- ========================================================================= -->
+    
+    <!-- Parse -->
+    
+    <channel id="parse-message-channel"/>
+    
+    
+    
+    <!-- Trades Parsing -->
+    
+    <c24:model id="tradesMessageModel" base-element="biz.c24.TradesElement"/>     
+    <int-c24:unmarshalling-transformer model-ref="tradesMessageModel"
+                                       input-channel="parse-message-channel" output-channel="validate-message-channel"
+                                       source-factory-ref="textualSourceFactory"/>   
+                                       
+                          
+                                       
+    <!-- Validate and filter out invalid messages -->   
+    
+    <int-c24:validating-selector id="c24Validator" fail-fast="true" throw-exception-on-rejection="true"/>
+    <filter input-channel="validate-message-channel" output-channel="process-message-channel" ref="c24Validator" discard-channel="errorChannel" />
+   
+   
+   
+    <!-- Process -->
+    
+    <channel id="process-message-channel">
+        <!-- We can track the progess of a message either via wire-tapping periodically or via headers -->
+         <interceptors>
+            <wire-tap channel="audit-channel"/>
+        </interceptors>
+    </channel>
+    
+    <!-- Normally business logic and transformations/normalisation would occur here. 
+         For now we'll just split the file up into individual trades -->
+    <chain input-channel="process-message-channel" output-channel="persist-valid-message-channel">
+        <transformer expression="payload.getTrade()"/>
+        <splitter/>
+        <!-- We can perform additional validation or filtering here if desired although validation is likely 
+             to be better expressed in the model -->
+        <!-- <filter expression="payload.getPrice() > 500"/>  -->
+    </chain>
+
+
+    <!-- Persist -->
+    
+    <channel id="persist-valid-message-channel" datatype="biz.c24.io.api.data.ComplexDataObject"/>
+    
+
+    <!-- Audit-channel -->
+    <logging-channel-adapter id="audit-channel" level="INFO" expression="headers[id]" logger-name="AuditLog"/>
+
+    <!-- ============== -->
+    <!-- Error handling -->
+    <!-- ============== -->
+
+    <channel id="errorChannel"/>
+    
+    <!-- Push validation errors in to the invalid region, everything else goes to the exceptions region -->
+    <exception-type-router input-channel="errorChannel" default-output-channel="persist-exception-message-channel">
+       <mapping exception-type="biz.c24.io.api.data.ValidationException" channel="persist-invalid-message-channel"/>
+    </exception-type-router>
+    
+    <channel id="persist-invalid-message-channel" datatype="java.lang.Throwable"/>
+    <channel id="persist-exception-message-channel" datatype="java.lang.Throwable"/>
+    
+
+    <!-- Logging -->
+
+    <logging-channel-adapter id="logging-channel" log-full-message="true" level="ERROR"/>
+    
+    
+    
+    <!-- Utility beans for the above -->
+
+    <!-- The source factory iO will use to read textual messages -->
+    <beans:bean id="textualSourceFactory" class="biz.c24.io.spring.source.TextualSourceFactory"/>    
+    
+</beans:beans>
