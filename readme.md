@@ -1,4 +1,4 @@
-Simple C24 iO, Spring Integration & H2 Demonstration
+Simple C24 iO, Spring Integration & Spring Boot example
 ====================================================
 
 This example shows how C24 iO can be used to parse, validate, filter and persist messages as part
@@ -40,11 +40,10 @@ built with:
 
 and run with:
 
-    mvn exec:java
+    mvn spring-boot:run
 
-At the command prompt, you can query the table into which the example writes its records, for example:
-
-    select * from Messages;
+Once the app is running messages will have been read in, transformed and persisted to an in-memory DB. To view them open a browser
+  and navigate to http://localhost:8080:
 
 On completion the table should contain 8 rows.
 
