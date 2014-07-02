@@ -58,8 +58,8 @@
 
         <start-class>Application</start-class>
 
-        <c24.spring.version>3.0.0</c24.spring.version>
-        <c24.api.version>4.6.0</c24.api.version>
+        <c24.spring.version>3.0.2</c24.spring.version>
+        <c24.api.version>4.6.1</c24.api.version>
         <c24.studio.version>4.6.0</c24.studio.version>
         
         <spring.version>4.0.5.RELEASE</spring.version>
