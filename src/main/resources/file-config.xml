@@ -27,13 +27,23 @@
 
 	
 	<!-- Read the Trade message files -->
-	<int-file:inbound-channel-adapter directory="data" 
-									  filename-pattern="*.csv" 
-									  prevent-duplicates="true" 
-									  channel="parse-message-channel"
-									  id="inbound-transport-file">
-		<poller fixed-rate="100" />
-	</int-file:inbound-channel-adapter>
+	<!--<int-file:inbound-channel-adapter directory="data" -->
+									  <!--filename-pattern="*.csv" -->
+									  <!--prevent-duplicates="true" -->
+									  <!--channel="parse-message-channel"-->
+									  <!--id="inbound-transport-file">-->
+		<!--<poller fixed-rate="100" />-->
+	<!--</int-file:inbound-channel-adapter>-->
+
+    <!-- Use this one when unmarshalling json -->
+    <int-file:inbound-channel-adapter directory="data"
+                                      filename-pattern="*_json.txt"
+                                      prevent-duplicates="true"
+                                      channel="parse-message-channel"
+                                      id="inbound-transport-file">
+        <poller fixed-rate="100" />
+    </int-file:inbound-channel-adapter>
+
 	
 
 </beans:beans>

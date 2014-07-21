@@ -40,7 +40,7 @@
     <c24:model id="tradesMessageModel" base-element="biz.c24.TradesElement"/>     
     <int-c24:unmarshalling-transformer model-ref="tradesMessageModel"
                                        input-channel="parse-message-channel" output-channel="validate-message-channel"
-                                       source-factory-ref="textualSourceFactory"/>   
+                                       source-factory-ref="jsonSourceFactory"/>
                                        
                           
                                        
@@ -103,6 +103,9 @@
     <!-- Utility beans for the above -->
 
     <!-- The source factory iO will use to read textual messages -->
-    <beans:bean id="textualSourceFactory" class="biz.c24.io.spring.source.TextualSourceFactory"/>    
-    
+    <beans:bean id="textualSourceFactory" class="biz.c24.io.spring.source.TextualSourceFactory"/>
+
+    <!-- The source factory iO will use to read json messages -->
+    <beans:bean id="jsonSourceFactory" class="biz.c24.io.spring.source.JsonSourceFactory"/>
+
 </beans:beans>

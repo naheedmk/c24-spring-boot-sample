@@ -1,16 +1,16 @@
 <?xml version="1.0" ?>
-<dataModel IOversion="3.1.0" attributeFormDefault="Unqualified" elementFormDefault="Qualified" encoding="UTF-8" encrypted="false" hibernateIDGeneratorMethodDefault="native" targetNamespace="http://www.c24.biz" name="Trades.dod" version="0.0.12">
+<dataModel IOversion="3.1.0" encrypted="false" targetNamespace="http://www.c24.biz" outputMask="JSON" elementFormDefault="Qualified" attributeFormDefault="Unqualified" encoding="UTF-8" hibernateIDGeneratorMethodDefault="native" name="Trades.dod" version="0.0.14">
   <classification name="File">
     <type>
-      <complexType abstract="false" byteAlignment="No Alignment" contentModel="Sequence" excludeFromDatabase="false" processAsBatch="false" specialisation="Generic complex" specifyStructure="true" name="Trades">
-        <element identifier="false" max="-1" min="1" typeRef="Records/Trade" name="Trade"></element>
+      <complexType specifyStructure="true" abstract="false" contentModel="Sequence" specialisation="Generic complex" excludeFromDatabase="false" processAsBatch="false" byteAlignment="No Alignment" name="Trades">
+        <element identifier="false" min="1" max="-1" typeRef="Records/Trade" name="Trade"></element>
       </complexType>
     </type>
-    <element identifier="false" max="1" min="1" typeRef="File/Trades" name="Trades"></element>
+    <element identifier="false" min="1" max="1" typeRef="File/Trades" name="Trades"></element>
   </classification>
   <classification name="Records">
     <type>
-      <complexType abstract="false" byteAlignment="No Alignment" contentModel="Sequence" excludeFromDatabase="false" processAsBatch="false" specialisation="Generic complex" specifyStructure="true" name="Trade">
+      <complexType specifyStructure="true" abstract="false" contentModel="Sequence" specialisation="Generic complex" excludeFromDatabase="false" processAsBatch="false" byteAlignment="No Alignment" name="Trade">
         <facet facetType="terminator">
           <value>0a|00</value>
         </facet>
@@ -20,12 +20,12 @@
         <facet facetType="format_type">
           <value>Delimited</value>
         </facet>
-        <element identifier="false" max="1" min="1" name="time">
+        <element identifier="false" min="1" max="1" name="time">
           <type>
             <atomicSimpleType baseType="#date_datetime" name="time"></atomicSimpleType>
           </type>
         </element>
-        <element identifier="false" max="1" min="1" name="id">
+        <element identifier="false" min="1" max="1" name="id">
           <type>
             <atomicSimpleType baseType="#string" name="id">
               <facet facetType="min_length">
@@ -34,7 +34,7 @@
             </atomicSimpleType>
           </type>
         </element>
-        <element identifier="false" max="1" min="1" name="counterparty">
+        <element identifier="false" min="1" max="1" name="counterparty">
           <type>
             <atomicSimpleType baseType="#string" name="counterparty">
               <facet facetType="min_length">
@@ -43,7 +43,7 @@
             </atomicSimpleType>
           </type>
         </element>
-        <element identifier="false" max="1" min="1" name="stock">
+        <element identifier="false" min="1" max="1" name="stock">
           <type>
             <atomicSimpleType baseType="#string" name="stock">
               <facet facetType="min_length">
@@ -52,7 +52,7 @@
             </atomicSimpleType>
           </type>
         </element>
-        <element identifier="false" max="1" min="1" name="quantity">
+        <element identifier="false" min="1" max="1" name="quantity">
           <type>
             <atomicSimpleType baseType="#number_long" name="quantity">
               <facet facetType="number_format">
@@ -62,7 +62,7 @@
             </atomicSimpleType>
           </type>
         </element>
-        <element identifier="false" max="1" min="1" name="currency">
+        <element identifier="false" min="1" max="1" name="currency">
           <type>
             <atomicSimpleType baseType="#string" name="currency">
               <facet facetType="min_length">
@@ -71,7 +71,7 @@
             </atomicSimpleType>
           </type>
         </element>
-        <element identifier="false" max="1" min="1" name="price">
+        <element identifier="false" min="1" max="1" name="price">
           <type>
             <atomicSimpleType baseType="#number_double" name="price">
               <facet facetType="number_format">
@@ -113,11 +113,11 @@ if((Long)object &lt;= 0) {
     return true;
 }
 </code>
-    <inputType modelRef="Trades.dod" typeRef="#any"></inputType>
+    <inputType typeRef="#any" modelRef="Trades.dod"></inputType>
     <import>java.util.*</import>
     <import>java.math.*</import>
     <import>java.lang.*</import>
     <import>java.text.*</import>
   </validationRule>
-  <namespace prefix="" uri="http://www.c24.biz"></namespace>
+  <namespace uri="http://www.c24.biz" prefix=""></namespace>
 </dataModel>
