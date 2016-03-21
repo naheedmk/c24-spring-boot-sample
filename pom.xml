@@ -58,9 +58,10 @@
 
         <start-class>Application</start-class>
 
-        <c24.spring.version>3.0.3</c24.spring.version>
-        <c24.api.version>4.6.1</c24.api.version>
-        <c24.studio.version>4.6.0</c24.studio.version>
+        <c24.spring.version>3.0.9</c24.spring.version>
+        <c24.api.version>4.8.0</c24.api.version>
+        <c24.studio.version>4.8.0</c24.studio.version>
+        <c24.io.maven.version>4.8.0</c24.io.maven.version>
         
         <spring.version>4.0.5.RELEASE</spring.version>
         <spring.integration.version>4.0.2.RELEASE</spring.integration.version>
@@ -186,7 +187,7 @@
             <plugin>
                 <groupId>biz.c24.io.maven</groupId>
                 <artifactId>c24-maven-plugin</artifactId>
-                <version>4.2.0</version>
+                <version>${c24.io.maven.version}</version>
                 <executions>
                     <execution>
                         <id>c24-model-deploy</id>
